@@ -32,33 +32,33 @@ function SidebarSubcompany({ handleDrawerToggle }) {
 
   const menuItems = [
     {
-      id: "/subcompanies/dashboard",
+      id: "/dashboard",
       translationKey: "menu_dashboard",
       name: "Dashboard",
       icon: <DashboardIcon />,
       subItems: null,
     },
     {
-      id: "/subcompanies/screens",
+      id: "/screens",
       translationKey: "menu_screens",
       name: "Screens",
       icon: <ScreenShareIcon />,
       subItems: null,
     },
     {
-      id: "/subcompanies/rockobits",
+      id: "/rockobits",
       translationKey: "menu_rockobits",
       name: "Rockobits",
       icon: <AttachMoneyIcon />,
       subItems: [
         {
-          id: "/subcompanies/rockobits/sale",
+          id: "/rockobits/sale",
           translationKey: "menu_sale",
           name: "Sale",
           icon: <MonetizationOnIcon />,
         },
         {
-          id: "/subcompanies/rockobits/qr",
+          id: "/rockobits/qr",
           translationKey: "menu_qr",
           name: "QR Code",
           icon: <QrCode2Icon />,
@@ -66,7 +66,7 @@ function SidebarSubcompany({ handleDrawerToggle }) {
       ],
     },
     {
-      id: "/subcompanies/transactions",
+      id: "/transactions",
       translationKey: "menu_transactions",
       name: "Transactions",
       icon: <DashboardIcon />,

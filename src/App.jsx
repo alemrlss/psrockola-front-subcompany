@@ -10,6 +10,11 @@ import PublicRoute from "./components/Routes/PublicRoute";
 import ProtectedRoute from "./components/Routes/ProtectedRoute";
 import Layout from "./components/Layout/Layout";
 import Login from "./views/Login/Login";
+import DashboardSubcompany from "./views/Dashboard/Dashboard";
+import ScreenSubcompany from "./views/Screens/Screens";
+import TransactionsSubcompany from "./views/Transactions/Transactions";
+import Sale from "./views/Rockobits/Sale/Sale";
+import QrSubcompany from "./views/Rockobits/Qr/QrSubcompany";
 
 function App() {
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -45,10 +50,15 @@ function App() {
 
           <Route path="/" element={<ProtectedRoute />}>
             <Route element={<Layout />}>
+              <Route path="dashboard" element={<DashboardSubcompany />} />
+              <Route path="screens" element={<ScreenSubcompany />} />
+              <Route path="rockobits/sale" element={<Sale />} />
+              <Route path="rockobits/qr" element={<QrSubcompany />}></Route>
+
               <Route
-                path="dashboard"
-                element={<h2> Dashboard Subcompany</h2>}
-              />
+                path="transactions"
+                element={<TransactionsSubcompany />}
+              ></Route>
               <Route path="*" element={<Navigate to="/dashboard" />} />{" "}
             </Route>
           </Route>
