@@ -1,6 +1,8 @@
 import { Box, Modal, Tab, Tabs, IconButton } from "@mui/material";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import ChangePasswordSubcompany from "../../common/Settings/ChangePasswordSubcompany";
+import UpdatePhotoSubcompany from "../../common/Settings/UpdatePhotoSubcompany";
 
 function ModalSubcompanyEdit({ openModal, handleCloseModal, user }) {
   const [tabValue, setTabValue] = useState(0);
@@ -64,6 +66,9 @@ function ModalSubcompanyEdit({ openModal, handleCloseModal, user }) {
               <Tab label="Update profile photo" variant="contained" />
             </Tabs>
 
+
+            {tabValue === 0 && <ChangePasswordSubcompany user={user} />}
+            {tabValue === 1 && <UpdatePhotoSubcompany user={user} />}
           </Box>
         </Box>
       </Box>
