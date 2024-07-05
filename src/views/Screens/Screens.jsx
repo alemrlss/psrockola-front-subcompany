@@ -16,6 +16,8 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import api from "../../api/api";
 import msToTime from "../../utils/formatMsToTime";
 
@@ -34,8 +36,8 @@ function ScreenSubcompany() {
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState(false);
   const [newPassword, setNewPassword] = useState("");
-
-  const [setscreenToPassword, setSetscreenToPassword] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [screenToPassword, setScreenToPassword] = useState(null);
 
   useEffect(() => {
     const fetchScreens = async () => {
@@ -190,13 +192,13 @@ function ScreenSubcompany() {
 
   const handleOpenChangePasswordModal = (screen) => {
     setIsChangePasswordModalOpen(true);
-    setSetscreenToPassword(screen);
+    setScreenToPassword(screen);
   };
 
   const handleCloseChangePasswordModal = () => {
     setIsChangePasswordModalOpen(false);
     setNewPassword("");
-    setSetscreenToPassword(null);
+    setScreenToPassword(null);
   };
 
   const handleChangePassword = async () => {
@@ -206,7 +208,7 @@ function ScreenSubcompany() {
     }
 
     try {
-      await api.patch(`/screen/change-password/${setscreenToPassword.id}`, {
+      await api.patch(`/screen/change-password/${screenToPassword.id}`, {
         newPassword: newPassword,
       });
     } catch (error) {
@@ -296,77 +298,45 @@ function ScreenSubcompany() {
             <Typography
               sx={{
                 display: "flex",
-                justifyContent: "end",
-                alignItems: "end",
-                margin: "auto",
-                fontWeight: "bold",
-                fontSize: "1.2rem",
+                alignItems: "center",
+                marginLeft: "auto",
+                fontSize: "20px",
               }}
             >
-              {selectedVideos.length} of {playlist.length} selected
+              {selectedScreen.name}
             </Typography>
           </div>
-          <Grid container spacing={2}>
-            {playlist.length > 0 ? (
-              playlist.map((video) => (
-                <Grid item xs={12} key={video.id}>
-                  <Box
-                    className="p-4 border border-gray-300 rounded"
-                    display="flex"
-                    alignItems="center"
-                    flexDirection={{ xs: "column", sm: "row" }}
-                  >
-                    <Checkbox
-                      checked={selectedVideos.some((v) => v.id === video.id)}
-                      onChange={(event) => handleCheckboxChange(event, video)}
-                    />
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        width: { xs: "100%", sm: "250px" },
-                        height: { xs: "auto", sm: "140px" },
-                        marginBottom: { xs: 2, sm: 0 },
-                        marginRight: { sm: 2 },
-                      }}
-                      src={`${process.env.REACT_APP_BASE_URL}/uploads/thumbnails/${video.thumbnail}`}
-                    />
-                    <Box flex={1}>
-                      <Typography
-                        variant="h6"
-                        className="font-bold break-words"
-                      >
-                        {video.name}
-                      </Typography>
-                      <Typography className="text-gray-600">
-                        {video.owner}
-                      </Typography>
-                      <Typography className="text-gray-600">
-                        {formatDateTime(video.created_at)}
-                      </Typography>
-                      <Typography className="text-gray-600">
-                        {msToTime(video.duration)}
-                      </Typography>
-                    </Box>
-                    <Box display="flex" flexDirection="column">
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        onClick={() => handleBanClick(video)}
-                      >
-                        Ban
-                      </Button>
-                    </Box>
-                  </Box>
-                </Grid>
-              ))
-            ) : (
-              <p>Cargando playlist...</p>
-            )}
-          </Grid>
+          {playlist.length > 0 ? (
+            playlist.map((video) => (
+              <div
+                key={video.id}
+                className="mb-4 p-2 border border-gray-300 bg-gray-200 flex justify-between items-center"
+              >
+                <Checkbox
+                  checked={selectedVideos.some((v) => v.id === video.id)}
+                  onChange={(event) => handleCheckboxChange(event, video)}
+                />
+                <Typography variant="subtitle1">
+                  {video.title} - <b>{msToTime(video.duration)}</b>
+                </Typography>
+                <Typography variant="subtitle1">
+                  {formatDateTime(video.created_at)}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleBanClick(video)}
+                >
+                  Ban
+                </Button>
+              </div>
+            ))
+          ) : (
+            <p>Cargando lista de reproducción...</p>
+          )}
         </>
       )}
 
-      {/* Modal for banning individual video */}
       <Modal
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -379,11 +349,11 @@ function ScreenSubcompany() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: { xs: "90%", sm: "400px" },
+            width: 400,
             bgcolor: "background.paper",
+            border: "2px solid #000",
             boxShadow: 24,
             p: 4,
-            borderRadius: 2,
           }}
         >
           <Typography id="modal-title" variant="h6" component="h2">
@@ -392,27 +362,21 @@ function ScreenSubcompany() {
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Are you sure you want to ban this video?
           </Typography>
-          <Stack direction="row" spacing={2} justifyContent="flex-end" mt={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={confirmBanVideo}
-              disabled={isBanning}
-            >
-              Yes
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button onClick={confirmBanVideo} variant="contained" color="secondary">
+              Confirm
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => setIsModalOpen(false)}
-              disabled={isBanning}
-            >
-              No
-            </Button>
-          </Stack>
+          </Box>
         </Box>
       </Modal>
 
-      {/* Modal for banning selected videos */}
       <Modal
         open={showConfirmationModal}
         onClose={() => setShowConfirmationModal(false)}
@@ -425,97 +389,89 @@ function ScreenSubcompany() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: { xs: "90%", sm: "400px" },
+            width: 400,
             bgcolor: "background.paper",
+            border: "2px solid #000",
             boxShadow: 24,
             p: 4,
-            borderRadius: 2,
           }}
         >
           <Typography id="confirmation-modal-title" variant="h6" component="h2">
-            Confirm Ban
+            Confirm Ban Selected
           </Typography>
           <Typography id="confirmation-modal-description" sx={{ mt: 2 }}>
             Are you sure you want to ban the selected videos?
           </Typography>
-          <Stack direction="row" spacing={2} justifyContent="flex-end" mt={4}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={confirmBanSelected}
-              disabled={isBanning}
-            >
-              Yes
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button onClick={() => setShowConfirmationModal(false)}>Cancel</Button>
+            <Button onClick={confirmBanSelected} variant="contained" color="secondary">
+              Confirm
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => setShowConfirmationModal(false)}
-              disabled={isBanning}
-            >
-              No
-            </Button>
-          </Stack>
+          </Box>
         </Box>
       </Modal>
 
-      {/* Modal for changing password */}
       <Modal
         open={isChangePasswordModalOpen}
         onClose={handleCloseChangePasswordModal}
+        aria-labelledby="change-password-modal-title"
+        aria-describedby="change-password-modal-description"
       >
         <Box
-          className="modal-box bg-white p-8 rounded-md shadow-lg"
           sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: { xs: "90%", sm: "400px" },
-            outline: "none",
+            width: 400,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
           }}
         >
-          <Typography variant="h6" className="mb-4">
+          <Typography id="change-password-modal-title" variant="h6" component="h2">
             Change Password
           </Typography>
-          <TextField
-            label="New Password"
-            type="password"
-            fullWidth
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="mb-4"
-            variant="outlined"
+          <Box
             sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "#E2E8F0",
-                },
-                "&:hover fieldset": {
-                  borderColor: "#CBD5E0",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#4A5568",
-                },
-              },
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
             }}
-          />
-          <Stack direction="row" spacing={2} justifyContent="flex-end">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleChangePassword}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            <TextField
+              label="New Password"
+              type={showPassword ? "text" : "password"}
+              fullWidth
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <IconButton
+              onClick={() => setShowPassword(!showPassword)}
+              edge="end"
             >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button onClick={handleCloseChangePasswordModal}>Cancel</Button>
+            <Button onClick={handleChangePassword} variant="contained" color="primary">
               Change
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleCloseChangePasswordModal}
-              className="bg-gray-500 hover:bg-gray-600 text-white"
-            >
-              Cancel
-            </Button>
-          </Stack>
+          </Box>
         </Box>
       </Modal>
     </Container>
