@@ -9,10 +9,12 @@ import { useDispatch } from "react-redux";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../features/authSlice";
+import { useTranslation } from "react-i18next";
 
 function SidebarEmployeeLogout({ item }) {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Usar useNavigate en lugar de useHistory
+  const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
 
@@ -52,7 +54,7 @@ function SidebarEmployeeLogout({ item }) {
           </ListItemIcon>
           <ListItemText
             sx={{ color: "white", ml: 0 }}
-            primary={"Cerrar sesión"}
+            primary={t(item.translationKey)}
           />
         </Box>
       </ListItemButton>

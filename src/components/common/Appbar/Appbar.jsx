@@ -9,10 +9,10 @@ import {
   Avatar,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import ModalSubcompanyEdit from "./ModalEdit";
+import LanguageSwitcher from "../../LanguageSwitcher";
 
 function AppBarSubcompany({ drawerWidth, handleDrawerToggle }) {
   const { t } = useTranslation();
@@ -98,6 +98,7 @@ function AppBarSubcompany({ drawerWidth, handleDrawerToggle }) {
                 marginX: { xs: "0px", sm: "10px" },
               }}
             >
+              <LanguageSwitcher />
             </Box>
 
             <Box

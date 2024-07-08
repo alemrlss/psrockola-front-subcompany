@@ -15,6 +15,7 @@ import {
 import api from "../../api/api";
 import { formatDate } from "../../utils/formatDate";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function QrTransactionSubcompany() {
   const user = useSelector((state) => state.auth.user);
@@ -23,6 +24,7 @@ function QrTransactionSubcompany() {
   const [take, setTake] = useState(20);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTransactions();
@@ -72,7 +74,7 @@ function QrTransactionSubcompany() {
               textAlign: "center",
             }}
           >
-            Generate QR
+           {t("view_transactions_generate_qr")}
           </TableCell>
           <TableCell
             sx={{
@@ -99,7 +101,7 @@ function QrTransactionSubcompany() {
               textAlign: "center",
             }}
           >
-            Cancel QR
+            {t("view_transactions_cancel_qr")}{" "}
           </TableCell>
           <TableCell
             sx={{
@@ -154,7 +156,7 @@ function QrTransactionSubcompany() {
         >
           <CircularProgress size={120} />
           <Typography variant="h6" sx={{ marginTop: "16px", fontSize: "32px" }}>
-            Loading...
+            {t("view_transactions_loading")}
           </Typography>
         </Box>
       ) : (
@@ -176,21 +178,21 @@ function QrTransactionSubcompany() {
                     textAlign: "center",
                   }}
                 >
-                  Date
+                  {t("view_transactions_table_date")}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
                   }}
                 >
-                  Type
+                  {t("view_transactions_table_type")}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
                   }}
                 >
-                  Amount
+                  {t("view_transactions_table_amount")}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -199,7 +201,7 @@ function QrTransactionSubcompany() {
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: "center" }}>
                     <Typography variant="body1">
-                      No transactions found
+                      {t("view_transactions_no")}
                     </Typography>
                   </TableCell>
                 </TableRow>

@@ -15,6 +15,7 @@ import {
 import { formatDate } from "../../utils/formatDate";
 import api from "../../api/api";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 function RockobitsTransactionsSubcompany() {
   const user = useSelector((state) => state.auth.user);
@@ -23,6 +24,7 @@ function RockobitsTransactionsSubcompany() {
   const [take, setTake] = useState(20);
   const [totalCount, setTotalCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTransactions();
@@ -76,7 +78,7 @@ function RockobitsTransactionsSubcompany() {
               justifyContent: "center",
             }}
           >
-            Transferencia de Distributor
+            {t("view_transactions_distributor")}
           </TableCell>
           <TableCell
             sx={{
@@ -115,7 +117,7 @@ function RockobitsTransactionsSubcompany() {
               justifyContent: "center",
             }}
           >
-            Transferencia a Cliente
+            {t("view_transactions_client")}
           </TableCell>
           <TableCell
             sx={{
@@ -153,7 +155,7 @@ function RockobitsTransactionsSubcompany() {
               textAlign: "center",
             }}
           >
-            Reclamo de QR
+            {t("view_transactions_qr")}
           </TableCell>
           <TableCell
             sx={{
@@ -191,7 +193,7 @@ function RockobitsTransactionsSubcompany() {
         >
           <CircularProgress size={120} />
           <Typography variant="h6" sx={{ marginTop: "16px", fontSize: "32px" }}>
-            Loading....{" "}
+            {t("view_transactions_loading")}
           </Typography>
         </Box>
       ) : (
@@ -213,28 +215,28 @@ function RockobitsTransactionsSubcompany() {
                     textAlign: "center",
                   }}
                 >
-                  Date
+                  {t("view_transactions_table_date")}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
                   }}
                 >
-                  Type
+                  {t("view_transactions_table_type")}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
                   }}
                 >
-                  Amount
+                  {t("view_transactions_table_amount")}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "center",
                   }}
                 >
-                  User
+                  {t("view_transactions_table_user")}
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -243,7 +245,7 @@ function RockobitsTransactionsSubcompany() {
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: "center" }}>
                     <Typography variant="body1">
-                      No transactions to display{" "}
+                      {t("view_screens_confirm_ban_selected_message")}
                     </Typography>
                   </TableCell>
                 </TableRow>

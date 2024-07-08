@@ -20,6 +20,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import api from "../../api/api";
 import msToTime from "../../utils/formatMsToTime";
+import { useTranslation } from "react-i18next";
 
 function ScreenSubcompany() {
   const user = useSelector((state) => state.auth.user);
@@ -38,6 +39,8 @@ function ScreenSubcompany() {
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [screenToPassword, setScreenToPassword] = useState(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchScreens = async () => {
@@ -223,7 +226,7 @@ function ScreenSubcompany() {
       {!selectedScreen ? (
         <>
           <Typography variant="h4" className="text-center my-4 font-bold">
-            Screens
+            {t("view_screens_subcompany")}
           </Typography>
           <Divider sx={{ my: 2 }} />
           {screens.length > 0 ? (
@@ -246,20 +249,20 @@ function ScreenSubcompany() {
                     color="primary"
                     onClick={() => handleOpenChangePasswordModal(screen)}
                   >
-                    Change Password
+                    {t("view_screens_change_password")}
                   </Button>
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={() => handleShowPlaylist(screen)}
                   >
-                    Show Playlist
+                    {t("view_screens_show_playlists")}
                   </Button>
                 </Box>
               </div>
             ))
           ) : (
-            <p>Cargando pantallas...</p>
+            <p>{t("view_screens_loading")}</p>
           )}
         </>
       ) : (
@@ -285,7 +288,9 @@ function ScreenSubcompany() {
               onClick={handleSelectAllChange}
               className="mb-2"
             >
-              {selectAll ? "Deselect All" : "Select All"}
+              {selectAll
+                ? t("view_screens_all_unselects")
+                : t("view_screens_all_selects")}
             </Button>
             <Button
               variant="contained"
@@ -293,7 +298,7 @@ function ScreenSubcompany() {
               onClick={handleBanSelected}
               className="mb-2"
             >
-              Ban Selected
+              {t("view_screens_ban_selected")}
             </Button>
             <Typography
               sx={{
@@ -306,7 +311,7 @@ function ScreenSubcompany() {
               {selectedScreen.name}
             </Typography>
           </div>
-          {playlist.length > 0 ? (
+          {playlist.length >= 0 ? (
             playlist.map((video) => (
               <div
                 key={video.id}
@@ -327,12 +332,12 @@ function ScreenSubcompany() {
                   color="secondary"
                   onClick={() => handleBanClick(video)}
                 >
-                  Ban
+                  {t("view_screens_ban")}
                 </Button>
               </div>
             ))
           ) : (
-            <p>Cargando lista de reproducción...</p>
+            <p>{t("view_screens_loading_playlists")}</p>
           )}
         </>
       )}
@@ -370,7 +375,11 @@ function ScreenSubcompany() {
             }}
           >
             <Button onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={confirmBanVideo} variant="contained" color="secondary">
+            <Button
+              onClick={confirmBanVideo}
+              variant="contained"
+              color="secondary"
+            >
               Confirm
             </Button>
           </Box>
@@ -397,10 +406,10 @@ function ScreenSubcompany() {
           }}
         >
           <Typography id="confirmation-modal-title" variant="h6" component="h2">
-            Confirm Ban Selected
+            {t("view_screens_confirm_ban_selected")}
           </Typography>
           <Typography id="confirmation-modal-description" sx={{ mt: 2 }}>
-            Are you sure you want to ban the selected videos?
+            {t("view_screens_confirm_ban_selected_message")}
           </Typography>
           <Box
             sx={{
@@ -409,9 +418,15 @@ function ScreenSubcompany() {
               justifyContent: "space-between",
             }}
           >
-            <Button onClick={() => setShowConfirmationModal(false)}>Cancel</Button>
-            <Button onClick={confirmBanSelected} variant="contained" color="secondary">
-              Confirm
+            <Button onClick={() => setShowConfirmationModal(false)}>
+              {t("view_screens_cancel_ban")}
+            </Button>
+            <Button
+              onClick={confirmBanSelected}
+              variant="contained"
+              color="secondary"
+            >
+              {t("view_screens_confirm_ban")}
             </Button>
           </Box>
         </Box>
@@ -436,8 +451,12 @@ function ScreenSubcompany() {
             p: 4,
           }}
         >
-          <Typography id="change-password-modal-title" variant="h6" component="h2">
-            Change Password
+          <Typography
+            id="change-password-modal-title"
+            variant="h6"
+            component="h2"
+          >
+            {t("view_screens_change_password")}
           </Typography>
           <Box
             sx={{
@@ -447,7 +466,7 @@ function ScreenSubcompany() {
             }}
           >
             <TextField
-              label="New Password"
+              label={t("view_screens_new_password")}
               type={showPassword ? "text" : "password"}
               fullWidth
               value={newPassword}
@@ -467,9 +486,15 @@ function ScreenSubcompany() {
               justifyContent: "space-between",
             }}
           >
-            <Button onClick={handleCloseChangePasswordModal}>Cancel</Button>
-            <Button onClick={handleChangePassword} variant="contained" color="primary">
-              Change
+            <Button onClick={handleCloseChangePasswordModal}>
+              {t("view_screens_cancel")}
+            </Button>
+            <Button
+              onClick={handleChangePassword}
+              variant="contained"
+              color="primary"
+            >
+              {t("view_screens_change")}
             </Button>
           </Box>
         </Box>
