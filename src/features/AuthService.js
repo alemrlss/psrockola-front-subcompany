@@ -53,6 +53,8 @@ const authService = {
           error.response.data.message === "DISTRIBUTOR_MEMBERSHIP_EXPIRED"
         ) {
           throw new Error("Distributor membership expired");
+        } else if (error.response.data.message === "SUBCOMPANY_NOT_FOUND") {
+          throw new Error("Subcompany not found");
         } else {
           throw new Error("Connection error, try again later");
         }

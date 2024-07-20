@@ -74,7 +74,7 @@ function QrTransactionSubcompany() {
               textAlign: "center",
             }}
           >
-           {t("view_transactions_generate_qr")}
+            {t("view_transactions_generate_qr")}
           </TableCell>
           <TableCell
             sx={{
@@ -220,6 +220,7 @@ function QrTransactionSubcompany() {
             rowsPerPage={take}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[20, 10]}
+            labelRowsPerPage={t("view_transactions_rows_per_page")}
           />
         </TableContainer>
       )}

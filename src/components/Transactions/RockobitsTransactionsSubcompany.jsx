@@ -245,7 +245,7 @@ function RockobitsTransactionsSubcompany() {
                 <TableRow>
                   <TableCell colSpan={4} sx={{ textAlign: "center" }}>
                     <Typography variant="body1">
-                      {t("view_screens_confirm_ban_selected_message")}
+                      {t("view_transactions_no")}
                     </Typography>
                   </TableCell>
                 </TableRow>
@@ -264,6 +264,7 @@ function RockobitsTransactionsSubcompany() {
             rowsPerPage={take}
             onRowsPerPageChange={handleChangeRowsPerPage}
             rowsPerPageOptions={[20, 10]}
+            labelRowsPerPage={t("view_transactions_rows_per_page")}
           />
         </TableContainer>
       )}

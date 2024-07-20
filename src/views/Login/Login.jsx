@@ -20,14 +20,28 @@ function LoginSubcompany() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("en"); // Default to English
 
   const dispatch = useDispatch();
   const goTo = useNavigate();
   const auth = useSelector((state) => state.auth);
 
   useEffect(() => {
+    const userLanguages = navigator.languages;
+    const supportedLanguages = ["es", "en", "pt"];
+
+    const foundLanguage = userLanguages.find((language) =>
+      supportedLanguages.includes(language.split("-")[0])
+    );
+
+    if (foundLanguage) {
+      setSelectedLanguage(foundLanguage.split("-")[0]);
+    }
+  }, []);
+
+  useEffect(() => {
     dispatch({ type: "auth/clearError" });
-  }, [dispatch]); // Ejecutar solo cuando el componente se monta
+  }, [dispatch]);
 
   const handleInputChange = (e) => {
     setError("");
@@ -38,12 +52,12 @@ function LoginSubcompany() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email.trim() || !formData.password.trim()) {
-      setError("Please complete all fields.");
+      setError(translations[selectedLanguage].completeFields);
       return;
     }
 
     if (!validateEmail(formData.email) || formData.password.length < 8) {
-      setError("Invalid email or password.");
+      setError(translations[selectedLanguage].invalidEmailOrPassword);
       return;
     }
 
@@ -74,6 +88,44 @@ function LoginSubcompany() {
     event.preventDefault();
   };
 
+  const translations = {
+    en: {
+      login: "Log in",
+      signIn: "Sign in as a subcompany",
+      email: "Email",
+      password: "Password",
+      submit: "Log in",
+      loading: "Loading...",
+      completeFields: "Please complete all fields.",
+      invalidEmailOrPassword: "Invalid email or password.",
+      forgotPassword: "Forgot Password?",
+    },
+    es: {
+      login: "Iniciar sesión",
+      signIn: "Iniciar sesión como subempresa",
+      email: "Correo electrónico",
+      password: "Contraseña",
+      submit: "Iniciar sesión",
+      loading: "Cargando...",
+      completeFields: "Por favor, complete todos los campos.",
+      invalidEmailOrPassword: "Correo electrónico o contraseña inválidos.",
+      forgotPassword: "¿Olvidó su contraseña?",
+    },
+    pt: {
+      login: "Entrar",
+      signIn: "Entrar como subempresa",
+      email: "E-mail",
+      password: "Senha",
+      submit: "Entrar",
+      loading: "Carregando...",
+      completeFields: "Por favor, preencha todos os campos.",
+      invalidEmailOrPassword: "E-mail ou senha inválidos.",
+      forgotPassword: "Esqueceu a senha?",
+    },
+  };
+
+  const currentTranslations = translations[selectedLanguage];
+
   return (
     <div
       style={{ position: "relative", height: "100vh" }}
@@ -91,17 +143,17 @@ function LoginSubcompany() {
             className="bg-white border rounded-xl p-4 py-8"
           >
             <Typography variant="h4" align="center" gutterBottom>
-              Log in
+              {currentTranslations.login}
             </Typography>
             <Typography variant="body1" align="center" gutterBottom>
-              Sign in as a subcompany{" "}
+              {currentTranslations.signIn}
             </Typography>
 
             <TextField
               id="email"
               name="email"
               type="email"
-              label="Email"
+              label={currentTranslations.email}
               variant="outlined"
               onChange={handleInputChange}
               fullWidth
@@ -112,7 +164,7 @@ function LoginSubcompany() {
               id="password"
               name="password"
               onChange={handleInputChange}
-              label="Password"
+              label={currentTranslations.password}
               variant="outlined"
               fullWidth
               size="small"
@@ -146,7 +198,9 @@ function LoginSubcompany() {
               }}
               disabled={loading} // Desactivar el botón mientras se realiza la petición
             >
-              {loading ? "Loading..." : "Log in"}
+              {loading
+                ? currentTranslations.loading
+                : currentTranslations.submit}
             </Button>
             {auth.status === "failed" && (
               <Typography

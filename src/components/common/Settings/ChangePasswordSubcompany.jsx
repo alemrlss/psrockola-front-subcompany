@@ -5,6 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import api from "../../../api/api";
+import { useTranslation } from "react-i18next";
 
 function ChangePasswordSubcompany({ user }) {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -17,6 +18,8 @@ function ChangePasswordSubcompany({ user }) {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
+  const {t} = useTranslation()
+
   const handleChangePassword = async () => {
     if (newPassword === confirmPassword) {
       try {
@@ -28,7 +31,6 @@ function ChangePasswordSubcompany({ user }) {
           newPassword: newPassword,
         });
 
-        console.log(response.data);
 
         setSuccessMessage(`Password changed successfully`); 
         setConfirmPassword("");
@@ -99,7 +101,7 @@ function ChangePasswordSubcompany({ user }) {
       <Box sx={{ position: 'relative', mb: 2 }}>
         <TextField
           type={showCurrentPassword ? "text" : "password"}
-          label="Current Password"
+          label={t("settings_password_current")}
           fullWidth
           value={currentPassword}
           onChange={handleCurrentPasswordChange}
@@ -118,7 +120,7 @@ function ChangePasswordSubcompany({ user }) {
       <Box sx={{ position: 'relative', mb: 2 }}>
         <TextField
           type={showNewPassword ? "text" : "password"}
-          label="New Password"
+          label={t("settings_password_new")}
           fullWidth
           value={newPassword}
           onChange={handleNewPasswordChange}
@@ -135,7 +137,7 @@ function ChangePasswordSubcompany({ user }) {
       <Box sx={{ position: 'relative', mb: 2 }}>
         <TextField
           type={showConfirmPassword ? "text" : "password"}
-          label="Confirm New Password"
+          label={t("settings_password_confirm")}
           fullWidth
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
@@ -157,7 +159,7 @@ function ChangePasswordSubcompany({ user }) {
             startIcon={<SaveIcon />}
             disabled={loading}
           >
-            {loading ? <CircularProgress size={20} /> : "Change"}
+            {loading ? <CircularProgress size={20} /> : t("settings_password_change")}
           </Button>
         </Grid>
         <Grid item>

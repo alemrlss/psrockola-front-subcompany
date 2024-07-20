@@ -3,8 +3,10 @@ import { Box, Avatar, Button, Input, Typography } from "@mui/material";
 import apiFormData from "../../../api/apiFormData";
 import { useDispatch } from "react-redux";
 import { updatePhoto } from "../../../features/authSlice";
+import { useTranslation } from "react-i18next";
 
 function UpdatePhotoSubcompany({ user }) {
+  const { t } = useTranslation();
   const [newPhoto, setNewPhoto] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
@@ -77,7 +79,7 @@ function UpdatePhotoSubcompany({ user }) {
         onClick={handleUploadPhoto}
         disabled={!newPhoto}
       >
-        Upload Photo
+        {t("settings_photo_upload")}
       </Button>
       {successMessage && (
         <Typography sx={{ mt: 1, color: "green" }}>{successMessage}</Typography>
